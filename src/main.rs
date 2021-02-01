@@ -32,13 +32,13 @@ use tools::{PathMode::*, *};
 use ui::*;
 
 use cursive::{
-    backend::{crossterm::Backend as CrossTerm, Backend},
+    backends::crossterm::Backend as CrossTerm,
     event::{EventTrigger, Key},
     logger,
     menu::MenuTree,
     view::{scroll::Scroller, Nameable, View},
     views::{Dialog, LinearLayout, OnEventView, ScrollView},
-    Cursive,
+    Cursive, CursiveExt,
 };
 use cursive_buffered_backend::BufferedBackend;
 use log::debug;
@@ -92,11 +92,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     debug!("{:?}", opts);
 
     let editor = EditorView::new(Editor::open(opts)?);
-    let mut siv = Cursive::try_new(|| {
-        CrossTerm::init()
-            .map(|cross| BufferedBackend::new(cross))
-            .map(|buf| -> Box<dyn Backend> { Box::new(buf) })
-    })?;
+    let mut siv = Cursive::new();
+    siv.run_with(|| {
+        let crossterm_backend = CrossTerm::init().unwrap();
+        let buffered_backend = BufferedBackend::new(crossterm_backend);
+        Box::new(buffered_backend)
+    });
 
     use PathMode::*;
 

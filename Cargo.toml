@@ -14,14 +14,14 @@ repository = "https://github.com/nytopop/askii.git"
 structopt = "0.3"
 log = "0.4"
 lazy_static = "1.4"
-parking_lot = "0.9"
+parking_lot = "0.11"
 line_drawing = "0.8"
 pathfinding = "2.0"
 num-traits = "0.2"
 clipboard = "0.5"
-cursive_buffered_backend = "0.3"
+cursive_buffered_backend = { git = "https://github.com/gyscos/cursive_buffered_backend" }
 
 [dependencies.cursive]
-version = "0.14"
+version = "0.16"
 default-features = false
 features = ["crossterm-backend", "unstable_scroll"]
